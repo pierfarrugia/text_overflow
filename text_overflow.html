@@ -14,79 +14,672 @@
     }
     html, body {
         margin: 0;
-        padding: 10px;
+        padding: 1EM;
         min-height: 100%;
         background-color: #202020;
         color: #BBBBBB;
     }
-
-    .div1 { grid-area: 1 / 1 / 2 / 2; }
-    .div2 { grid-area: 1 / 2 / 2 / 3; }
-
     section {
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: 1fr;
-        grid-column-gap: 10px;
-        grid-row-gap: 0;
+        margin-top: 1em;
     }
     section:nth-child(even) {
-        background-color: #505050;
+        background-color: #303030;
     }
     section:nth-child(odd) {
-        background-color: #202020;
+        background-color: #404040;
     }
-
+    .container {
+        width: 100%;
+        padding: 1em;
+    }
     /* *************** */
     /* text_overflow styles */
     /* *************** */
-    .card-samesize {
+
+    /* this text_overflow is based on CSS grid */
+    .cards-size {
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 0;
+        grid-row-gap: 1em;
+        align-items: flex-start;
     }
-    .card {
+    @media (min-width: 35.5em) {
+        /* 568px */
+
+    }
+    @media (min-width: 48em) {
+        /* 768px */
+        .cards-size {
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 0.5em;
+        }
+    }
+    @media (min-width: 64em) {
+        /* 1024px */
+        .cards-size {
+            grid-template-columns: repeat(4, 1fr);
+            grid-column-gap: 1em;
+        }
+    }
+    @media (min-width: 85em) {
+        /* 1360px */
+
+    }
+
+    .card-size {
+        position: relative;
+        padding: 1em;
         color: #202020;
         background-color: #CCCCCC;
-        padding: 1em;
+        transition: all 0.3s ease-in-out;
+    }
+    .card-size button.ellipsis {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        width: 2em;
+        line-height: 1em;
+        border: none;
+        background: #E1EEF4;
+        z-index: 9;
+        font-size: 1.25em;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .card-size button.ellipsis .ico {
+        font-size: 2em;
+        font-weight: 700;
+    }
+    .card-samesize {
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
     }
 
 </style>
 
 <body>
 
-<!-- just some sections to have something in the demo -->
-<section id="section1" class="cards cards-samesize">
-    <div class="card">
-        <div class="card-samesize">
-            <h2>Lorem Ipsum</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In fermentum et sollicitudin ac orci phasellus egestas tellus. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Egestas tellus rutrum tellus pellentesque eu. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. At tempor commodo ullamcorper a lacus vestibulum sed. Id porta nibh venenatis cras sed felis eget. Arcu vitae elementum curabitur vitae nunc sed. Varius quam quisque id diam vel. Turpis egestas sed tempus urna et pharetra pharetra massa massa.</p>
+<p><i>cut text in card</i></p>
+<p>3 cards height possible: min, average, max</p>
+<p>3 expansions possible: overflow, grow 1, grow all</p>
+<hr>
+<section id="section1">
+    <div class="container">
+        <h2>Size: min (of 4)</h2>
+        <h2>Expansion: scroll</h2>
+        <div class="cards-size" data-size="min" data-ellipsis="overflow">
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Lorem Ipsum</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In fermentum et
+                    sollicitudin ac
+                    orci phasellus egestas tellus. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Egestas tellus rutrum tellus pellentesque eu.
+                    Nisi
+                    vitae
+                    suscipit tellus mauris a diam maecenas sed enim. At tempor commodo ullamcorper a lacus vestibulum sed. Id porta nibh venenatis cras sed felis eget.
+                    Arcu
+                    vitae
+                    elementum curabitur vitae nunc sed. Varius quam quisque id diam vel. Turpis egestas sed tempus urna et pharetra pharetra massa massa.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Duis at tellus</h2>
+                    <p>Duis at tellus at urna condimentum mattis pellentesque id. Suspendisse in est ante in. Est ultricies integer quis auctor elit sed vulputate mi. Sed
+                    viverra
+                    tellus in hac. Amet facilisis magna etiam tempor orci. Non consectetur a erat nam at lectus. Tortor aliquam nulla facilisi cras fermentum. Vel
+                    facilisis
+                    volutpat est velit egestas. Mi in nulla posuere sollicitudin aliquam ultrices. Ut diam quam nulla porttitor massa id neque. Consequat semper viverra
+                    nam
+                    libero justo. Tortor at risus viverra adipiscing at in tellus. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Nisl suscipit adipiscing
+                    bibendum
+                    est
+                    ultricies integer. Tempus egestas sed sed risus pretium quam vulputate dignissim.</p>
+                    <p>Cras adipiscing enim eu turpis egestas pretium. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Cras semper auctor neque vitae tempus
+                    quam
+                    pellentesque. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Ut consequat
+                    semper
+                    viverra nam libero justo laoreet sit. Diam phasellus vestibulum lorem sed risus ultricies. Turpis egestas pretium aenean pharetra. Nisi est sit amet
+                    facilisis. Cum sociis natoque penatibus et magnis dis parturient montes nascetur. Egestas dui id ornare arcu odio ut sem nulla. Diam maecenas
+                    ultricies mi
+                    eget mauris pharetra et ultrices neque. Nullam ac tortor vitae purus faucibus ornare suspendisse. Id aliquet risus feugiat in ante. Amet mauris
+                    commodo
+                    quis
+                    imperdiet massa. Sit amet purus gravida quis blandit turpis cursus in. Neque viverra justo nec ultrices. Nisl rhoncus mattis rhoncus urna neque
+                    viverra.
+                    Libero id faucibus nisl tincidunt eget nullam. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Mattis enim</h2>
+                    <p>Mattis enim ut tellus elementum sagittis vitae. Consequat mauris nunc congue nisi vitae. Malesuada nunc vel risus commodo viverra maecenas. Commodo
+                    nulla
+                    facilisi nullam vehicula ipsum a. Nisl purus in mollis nunc sed id semper risus. Sed id semper risus in hendrerit gravida rutrum quisque. Parturient
+                    montes
+                    nascetur ridiculus mus mauris. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Viverra justo nec ultrices dui sapien eget mi
+                    proin
+                    sed.
+                    Pretium lectus quam id leo. Tristique risus nec feugiat in fermentum. Quis vel eros donec ac odio tempor orci dapibus. Amet tellus cras adipiscing
+                    enim eu
+                    turpis. In massa tempor nec feugiat. Arcu ac tortor dignissim convallis aenean. Sapien et ligula ullamcorper malesuada proin libero nunc consequat.
+                    Feugiat
+                    scelerisque varius morbi enim.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Sit amet commodo</h2>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant
+                    morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non
+                    quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant
+                    morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non
+                    quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="card-samesize">
-        <h2>Duis at tellus</h2>
-        <p>Duis at tellus at urna condimentum mattis pellentesque id. Suspendisse in est ante in. Est ultricies integer quis auctor elit sed vulputate mi. Sed viverra tellus in hac. Amet facilisis magna etiam tempor orci. Non consectetur a erat nam at lectus. Tortor aliquam nulla facilisi cras fermentum. Vel facilisis volutpat est velit egestas. Mi in nulla posuere sollicitudin aliquam ultrices. Ut diam quam nulla porttitor massa id neque. Consequat semper viverra nam libero justo. Tortor at risus viverra adipiscing at in tellus. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Nisl suscipit adipiscing bibendum est ultricies integer. Tempus egestas sed sed risus pretium quam vulputate dignissim.</p>
-        <p>Cras adipiscing enim eu turpis egestas pretium. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Cras semper auctor neque vitae tempus quam pellentesque. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Ut consequat semper viverra nam libero justo laoreet sit. Diam phasellus vestibulum lorem sed risus ultricies. Turpis egestas pretium aenean pharetra. Nisi est sit amet facilisis. Cum sociis natoque penatibus et magnis dis parturient montes nascetur. Egestas dui id ornare arcu odio ut sem nulla. Diam maecenas ultricies mi eget mauris pharetra et ultrices neque. Nullam ac tortor vitae purus faucibus ornare suspendisse. Id aliquet risus feugiat in ante. Amet mauris commodo quis imperdiet massa. Sit amet purus gravida quis blandit turpis cursus in. Neque viverra justo nec ultrices. Nisl rhoncus mattis rhoncus urna neque viverra. Libero id faucibus nisl tincidunt eget nullam. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.</p>
+</section>
+
+<section id="section2">
+    <div class="container">
+        <h2>Size: min (of 4)</h2>
+        <h2>Expansion: grow (the one clicked)</h2>
+        <div class="cards-size" data-size="min" data-ellipsis="grow">
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Lorem Ipsum</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In fermentum et
+                    sollicitudin ac
+                    orci phasellus egestas tellus. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Egestas tellus rutrum tellus pellentesque eu.
+                    Nisi
+                    vitae
+                    suscipit tellus mauris a diam maecenas sed enim. At tempor commodo ullamcorper a lacus vestibulum sed. Id porta nibh venenatis cras sed felis eget.
+                    Arcu
+                    vitae
+                    elementum curabitur vitae nunc sed. Varius quam quisque id diam vel. Turpis egestas sed tempus urna et pharetra pharetra massa massa.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Duis at tellus</h2>
+                    <p>Duis at tellus at urna condimentum mattis pellentesque id. Suspendisse in est ante in. Est ultricies integer quis auctor elit sed vulputate mi. Sed
+                    viverra
+                    tellus in hac. Amet facilisis magna etiam tempor orci. Non consectetur a erat nam at lectus. Tortor aliquam nulla facilisi cras fermentum. Vel
+                    facilisis
+                    volutpat est velit egestas. Mi in nulla posuere sollicitudin aliquam ultrices. Ut diam quam nulla porttitor massa id neque. Consequat semper viverra
+                    nam
+                    libero justo. Tortor at risus viverra adipiscing at in tellus. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Nisl suscipit adipiscing
+                    bibendum
+                    est
+                    ultricies integer. Tempus egestas sed sed risus pretium quam vulputate dignissim.</p>
+                    <p>Cras adipiscing enim eu turpis egestas pretium. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Cras semper auctor neque vitae tempus
+                    quam
+                    pellentesque. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Ut consequat
+                    semper
+                    viverra nam libero justo laoreet sit. Diam phasellus vestibulum lorem sed risus ultricies. Turpis egestas pretium aenean pharetra. Nisi est sit amet
+                    facilisis. Cum sociis natoque penatibus et magnis dis parturient montes nascetur. Egestas dui id ornare arcu odio ut sem nulla. Diam maecenas
+                    ultricies mi
+                    eget mauris pharetra et ultrices neque. Nullam ac tortor vitae purus faucibus ornare suspendisse. Id aliquet risus feugiat in ante. Amet mauris
+                    commodo
+                    quis
+                    imperdiet massa. Sit amet purus gravida quis blandit turpis cursus in. Neque viverra justo nec ultrices. Nisl rhoncus mattis rhoncus urna neque
+                    viverra.
+                    Libero id faucibus nisl tincidunt eget nullam. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Mattis enim</h2>
+                    <p>Mattis enim ut tellus elementum sagittis vitae. Consequat mauris nunc congue nisi vitae. Malesuada nunc vel risus commodo viverra maecenas. Commodo
+                    nulla
+                    facilisi nullam vehicula ipsum a. Nisl purus in mollis nunc sed id semper risus. Sed id semper risus in hendrerit gravida rutrum quisque. Parturient
+                    montes
+                    nascetur ridiculus mus mauris. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Viverra justo nec ultrices dui sapien eget mi
+                    proin
+                    sed.
+                    Pretium lectus quam id leo. Tristique risus nec feugiat in fermentum. Quis vel eros donec ac odio tempor orci dapibus. Amet tellus cras adipiscing
+                    enim eu
+                    turpis. In massa tempor nec feugiat. Arcu ac tortor dignissim convallis aenean. Sapien et ligula ullamcorper malesuada proin libero nunc consequat.
+                    Feugiat
+                    scelerisque varius morbi enim.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Sit amet commodo</h2>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant
+                    morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non
+                    quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant
+                    morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non
+                    quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-samesize">
-        <h2>Mattis enim</h2>
-        <p>Mattis enim ut tellus elementum sagittis vitae. Consequat mauris nunc congue nisi vitae. Malesuada nunc vel risus commodo viverra maecenas. Commodo nulla facilisi nullam vehicula ipsum a. Nisl purus in mollis nunc sed id semper risus. Sed id semper risus in hendrerit gravida rutrum quisque. Parturient montes nascetur ridiculus mus mauris. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Viverra justo nec ultrices dui sapien eget mi proin sed. Pretium lectus quam id leo. Tristique risus nec feugiat in fermentum. Quis vel eros donec ac odio tempor orci dapibus. Amet tellus cras adipiscing enim eu turpis. In massa tempor nec feugiat. Arcu ac tortor dignissim convallis aenean. Sapien et ligula ullamcorper malesuada proin libero nunc consequat. Feugiat scelerisque varius morbi enim.</p>
+</section>
+
+<section id="section3">
+    <div class="container">
+        <h2>Size: min (of 4)</h2>
+        <h2>Expansion: full (biggest height for all)</h2>
+        <div class="cards-size" data-size="min" data-ellipsis="full">
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Lorem Ipsum</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In fermentum et
+                    sollicitudin ac
+                    orci phasellus egestas tellus. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Egestas tellus rutrum tellus pellentesque eu.
+                    Nisi vitae
+                    suscipit tellus mauris a diam maecenas sed enim. At tempor commodo ullamcorper a lacus vestibulum sed. Id porta nibh venenatis cras sed felis eget.
+                    Arcu vitae
+                    elementum curabitur vitae nunc sed. Varius quam quisque id diam vel. Turpis egestas sed tempus urna et pharetra pharetra massa massa.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Duis at tellus</h2>
+                    <p>Duis at tellus at urna condimentum mattis pellentesque id. Suspendisse in est ante in. Est ultricies integer quis auctor elit sed vulputate mi. Sed
+                    viverra
+                    tellus in hac. Amet facilisis magna etiam tempor orci. Non consectetur a erat nam at lectus. Tortor aliquam nulla facilisi cras fermentum. Vel
+                    facilisis
+                    volutpat est velit egestas. Mi in nulla posuere sollicitudin aliquam ultrices. Ut diam quam nulla porttitor massa id neque. Consequat semper viverra
+                    nam
+                    libero justo. Tortor at risus viverra adipiscing at in tellus. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Nisl suscipit adipiscing
+                    bibendum est
+                    ultricies integer. Tempus egestas sed sed risus pretium quam vulputate dignissim.</p>
+                    <p>Cras adipiscing enim eu turpis egestas pretium. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Cras semper auctor neque vitae tempus
+                    quam
+                    pellentesque. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Ut consequat
+                    semper
+                    viverra nam libero justo laoreet sit. Diam phasellus vestibulum lorem sed risus ultricies. Turpis egestas pretium aenean pharetra. Nisi est sit amet
+                    facilisis. Cum sociis natoque penatibus et magnis dis parturient montes nascetur. Egestas dui id ornare arcu odio ut sem nulla. Diam maecenas
+                    ultricies mi
+                    eget mauris pharetra et ultrices neque. Nullam ac tortor vitae purus faucibus ornare suspendisse. Id aliquet risus feugiat in ante. Amet mauris
+                    commodo quis
+                    imperdiet massa. Sit amet purus gravida quis blandit turpis cursus in. Neque viverra justo nec ultrices. Nisl rhoncus mattis rhoncus urna neque
+                    viverra.
+                    Libero id faucibus nisl tincidunt eget nullam. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Mattis enim</h2>
+                    <p>Mattis enim ut tellus elementum sagittis vitae. Consequat mauris nunc congue nisi vitae. Malesuada nunc vel risus commodo viverra maecenas. Commodo
+                    nulla
+                    facilisi nullam vehicula ipsum a. Nisl purus in mollis nunc sed id semper risus. Sed id semper risus in hendrerit gravida rutrum quisque. Parturient
+                    montes
+                    nascetur ridiculus mus mauris. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Viverra justo nec ultrices dui sapien eget mi
+                    proin sed.
+                    Pretium lectus quam id leo. Tristique risus nec feugiat in fermentum. Quis vel eros donec ac odio tempor orci dapibus. Amet tellus cras adipiscing
+                    enim eu
+                    turpis. In massa tempor nec feugiat. Arcu ac tortor dignissim convallis aenean. Sapien et ligula ullamcorper malesuada proin libero nunc consequat.
+                    Feugiat
+                    scelerisque varius morbi enim.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Sit amet commodo</h2>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-samesize">
-        <h2>Sit amet commodo</h2>
-        <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque habitant morbi tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi. Aliquam etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam non quam lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+</section>
+
+<section id="section4">
+    <div class="container">
+        <h2>Size: average (of 4)</h2>
+        <h2>Expansion: scroll</h2>
+        <div class="cards-size" data-size="min" data-ellipsis="overflow">
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Lorem Ipsum</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In fermentum et
+                    sollicitudin ac
+                    orci phasellus egestas tellus. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Egestas tellus rutrum tellus pellentesque eu.
+                    Nisi vitae
+                    suscipit tellus mauris a diam maecenas sed enim. At tempor commodo ullamcorper a lacus vestibulum sed. Id porta nibh venenatis cras sed felis eget.
+                    Arcu vitae
+                    elementum curabitur vitae nunc sed. Varius quam quisque id diam vel. Turpis egestas sed tempus urna et pharetra pharetra massa massa.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Duis at tellus</h2>
+                    <p>Duis at tellus at urna condimentum mattis pellentesque id. Suspendisse in est ante in. Est ultricies integer quis auctor elit sed vulputate mi. Sed
+                    viverra
+                    tellus in hac. Amet facilisis magna etiam tempor orci. Non consectetur a erat nam at lectus. Tortor aliquam nulla facilisi cras fermentum. Vel
+                    facilisis
+                    volutpat est velit egestas. Mi in nulla posuere sollicitudin aliquam ultrices. Ut diam quam nulla porttitor massa id neque. Consequat semper viverra
+                    nam
+                    libero justo. Tortor at risus viverra adipiscing at in tellus. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Nisl suscipit adipiscing
+                    bibendum est
+                    ultricies integer. Tempus egestas sed sed risus pretium quam vulputate dignissim.</p>
+                    <p>Cras adipiscing enim eu turpis egestas pretium. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Cras semper auctor neque vitae tempus
+                    quam
+                    pellentesque. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Ut consequat
+                    semper
+                    viverra nam libero justo laoreet sit. Diam phasellus vestibulum lorem sed risus ultricies. Turpis egestas pretium aenean pharetra. Nisi est sit amet
+                    facilisis. Cum sociis natoque penatibus et magnis dis parturient montes nascetur. Egestas dui id ornare arcu odio ut sem nulla. Diam maecenas
+                    ultricies mi
+                    eget mauris pharetra et ultrices neque. Nullam ac tortor vitae purus faucibus ornare suspendisse. Id aliquet risus feugiat in ante. Amet mauris
+                    commodo quis
+                    imperdiet massa. Sit amet purus gravida quis blandit turpis cursus in. Neque viverra justo nec ultrices. Nisl rhoncus mattis rhoncus urna neque
+                    viverra.
+                    Libero id faucibus nisl tincidunt eget nullam. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Mattis enim</h2>
+                    <p>Mattis enim ut tellus elementum sagittis vitae. Consequat mauris nunc congue nisi vitae. Malesuada nunc vel risus commodo viverra maecenas. Commodo
+                    nulla
+                    facilisi nullam vehicula ipsum a. Nisl purus in mollis nunc sed id semper risus. Sed id semper risus in hendrerit gravida rutrum quisque. Parturient
+                    montes
+                    nascetur ridiculus mus mauris. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Viverra justo nec ultrices dui sapien eget mi
+                    proin sed.
+                    Pretium lectus quam id leo. Tristique risus nec feugiat in fermentum. Quis vel eros donec ac odio tempor orci dapibus. Amet tellus cras adipiscing
+                    enim eu
+                    turpis. In massa tempor nec feugiat. Arcu ac tortor dignissim convallis aenean. Sapien et ligula ullamcorper malesuada proin libero nunc consequat.
+                    Feugiat
+                    scelerisque varius morbi enim.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Sit amet commodo</h2>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="section5">
+    <div class="container">
+        <h2>Size: biggest (of 4)</h2>
+        <h2>Expansion: nothing</h2>
+        <div class="cards-size" data-size="max">
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Lorem Ipsum</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In fermentum et
+                    sollicitudin ac
+                    orci phasellus egestas tellus. Magna fringilla urna porttitor rhoncus dolor purus non enim praesent. Egestas tellus rutrum tellus pellentesque eu.
+                    Nisi vitae
+                    suscipit tellus mauris a diam maecenas sed enim. At tempor commodo ullamcorper a lacus vestibulum sed. Id porta nibh venenatis cras sed felis eget.
+                    Arcu vitae
+                    elementum curabitur vitae nunc sed. Varius quam quisque id diam vel. Turpis egestas sed tempus urna et pharetra pharetra massa massa.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Duis at tellus</h2>
+                    <p>Duis at tellus at urna condimentum mattis pellentesque id. Suspendisse in est ante in. Est ultricies integer quis auctor elit sed vulputate mi. Sed
+                    viverra
+                    tellus in hac. Amet facilisis magna etiam tempor orci. Non consectetur a erat nam at lectus. Tortor aliquam nulla facilisi cras fermentum. Vel
+                    facilisis
+                    volutpat est velit egestas. Mi in nulla posuere sollicitudin aliquam ultrices. Ut diam quam nulla porttitor massa id neque. Consequat semper viverra
+                    nam
+                    libero justo. Tortor at risus viverra adipiscing at in tellus. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Nisl suscipit adipiscing
+                    bibendum est
+                    ultricies integer. Tempus egestas sed sed risus pretium quam vulputate dignissim.</p>
+                    <p>Cras adipiscing enim eu turpis egestas pretium. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Cras semper auctor neque vitae tempus
+                    quam
+                    pellentesque. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Id eu nisl nunc mi ipsum faucibus vitae aliquet nec. Ut consequat
+                    semper
+                    viverra nam libero justo laoreet sit. Diam phasellus vestibulum lorem sed risus ultricies. Turpis egestas pretium aenean pharetra. Nisi est sit amet
+                    facilisis. Cum sociis natoque penatibus et magnis dis parturient montes nascetur. Egestas dui id ornare arcu odio ut sem nulla. Diam maecenas
+                    ultricies mi
+                    eget mauris pharetra et ultrices neque. Nullam ac tortor vitae purus faucibus ornare suspendisse. Id aliquet risus feugiat in ante. Amet mauris
+                    commodo quis
+                    imperdiet massa. Sit amet purus gravida quis blandit turpis cursus in. Neque viverra justo nec ultrices. Nisl rhoncus mattis rhoncus urna neque
+                    viverra.
+                    Libero id faucibus nisl tincidunt eget nullam. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Mattis enim</h2>
+                    <p>Mattis enim ut tellus elementum sagittis vitae. Consequat mauris nunc congue nisi vitae. Malesuada nunc vel risus commodo viverra maecenas. Commodo
+                    nulla
+                    facilisi nullam vehicula ipsum a. Nisl purus in mollis nunc sed id semper risus. Sed id semper risus in hendrerit gravida rutrum quisque. Parturient
+                    montes
+                    nascetur ridiculus mus mauris. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Viverra justo nec ultrices dui sapien eget mi
+                    proin sed.
+                    Pretium lectus quam id leo. Tristique risus nec feugiat in fermentum. Quis vel eros donec ac odio tempor orci dapibus. Amet tellus cras adipiscing
+                    enim eu
+                    turpis. In massa tempor nec feugiat. Arcu ac tortor dignissim convallis aenean. Sapien et ligula ullamcorper malesuada proin libero nunc consequat.
+                    Feugiat
+                    scelerisque varius morbi enim.</p>
+                </div>
+            </div>
+            <div class="card-size">
+                <div class="card-samesize">
+                    <h2>Sit amet commodo</h2>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                    <p>Sit amet commodo nulla facilisi nullam. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Condimentum vitae sapien pellentesque
+                    habitant morbi
+                    tristique senectus. Habitant morbi tristique senectus et netus et malesuada. Non consectetur a erat nam at. Aliquam id diam maecenas ultricies mi.
+                    Aliquam
+                    etiam erat velit scelerisque in dictum non consectetur. Porta lorem mollis aliquam ut porttitor leo. Imperdiet dui accumsan sit amet. Pulvinar etiam
+                    non quam
+                    lacus suspendisse. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 
-
 <script>
 
-    const heightCalc = function(el) {
+    const heightCardCalc = function (el) {
         let els = el.querySelectorAll('.card-samesize');
-        let hmin = 0;
-        els.forEach(e => function () {
-
+        let hmin = 10000;
+        let haverage = 0;
+        let nbel = 0;
+        let hmax = 0;
+        els.forEach(e => {
+            let h = e.getBoundingClientRect().height;
+            if (h < hmin) {
+                hmin = h;
+            }
+            haverage += h;
+            nbel += 1;
+            if (h > hmax) {
+                hmax = h;
+            }
         })
+        haverage = Math.floor(haverage / nbel);
+        el.dataset.fullheight = hmax;
+        el.dataset.averageheight = hmin;
+        el.dataset.cutheight = hmin;
+
+        let how = el.dataset.size;
+        if (how === '') {
+            how = 'min';
+        }
+        //console.log(els);
+        //console.log(how);
+        if (how === 'min') {
+            return hmin;
+        } else if (how === 'average') {
+            return haverage;
+        } else if (how === 'max') {
+            return hmax;
+        }
+    }
+
+    const heightCardSet = function (el, hm) {
+        console.log(el);
+        console.log(hm);
+        let els = el.querySelectorAll('.card-samesize');
+        console.log(els);
+        let how = el.dataset.ellipsis;
+        console.log(how);
+        if (how === '') {
+            how = 'overflow';
+        }
+        els.forEach(e => {
+            let h = e.getBoundingClientRect().height;
+            e.style.height = hm + 'px';
+            e.style.overflowY = 'hidden';
+            if (h > hm) {
+                if (!e.querySelector('.ellipsis')) {
+                    let btn = document.createElement("button");
+                    btn.classList.add('ellipsis');
+                    btn.classList.add('more');
+                    btn.innerHTML = '&#8943;';
+                    e.appendChild(btn);
+                }
+                e.querySelector('.ellipsis').addEventListener('click', function (e) {
+                    e.stopImmediatePropagation();
+                    //console.log(e.target);
+                    ellipsisMore(e.target, how);
+                })
+            }
+        })
+    }
+
+    const clickBody = () => {
+        document.body.addEventListener('click', function (e) {
+            console.log(e.target);
+        })
+    }
+    window.addEventListener('load', clickBody);
+
+    window.onload = function () {
+        let els = document.querySelectorAll('.cards-size');
+        els.forEach(e => {
+            let hm = heightCardCalc(e);
+            console.log(hm);
+            heightCardSet(e, hm);
+        })
+    }
+
+    function ellipsisMore(e, how) {
+        console.log(e.parentElement);
+        console.log(how);
+        if (e.classList.contains('more')) {
+            if (how === 'overflow') {
+                e.parentElement.style.overflowY = 'scroll';
+                e.innerHTML = '&#8211;';
+                e.classList.remove('more');
+            } else if (how === 'grow') {
+                e.parentElement.style.height = 'auto';
+                e.innerHTML = '&#8211;';
+                e.classList.remove('more');
+            } else if (how === 'full') {
+                const econtainer = e.closest('.cards-size');
+                let hmax = econtainer.dataset.fullheight;
+                let els = econtainer.querySelectorAll('.card-samesize');
+                els.forEach(e => {
+                    e.style.height = hmax + 'px';
+                    const eellipsis = e.querySelector('.ellipsis');
+                    if (eellipsis) {
+                        eellipsis.innerHTML = '&#8211;';
+                        eellipsis.classList.remove('more');
+                    }
+                })
+            }
+        } else {
+            e.parentElement.scrollTop = 0;
+            if ((how === 'overflow') || (how === 'grow')) {
+                if (how === 'overflow') {
+                    e.parentElement.style.overflowY = 'hidden';
+                } else { //grow
+                    e.parentElement.style.height = e.closest('.cards-size').dataset.cutheight + 'px';
+                }
+                e.innerHTML = '&#8943;';
+                e.classList.add('more');
+            } else if (how === 'full') {
+                const econtainer = e.closest('.cards-size');
+                let how = econtainer.dataset.size;
+                let hcut = 0;
+                if (how === 'min') {
+                    hcut = econtainer.dataset.cutheight;
+                } else if (how === 'average') {
+                    hcut = econtainer.dataset.averageheight;
+                }
+
+                let els = econtainer.querySelectorAll('.card-samesize');
+                els.forEach(e => {
+                    e.style.height = hcut + 'px';
+                    const eellipsis = e.querySelector('.ellipsis');
+                    if (eellipsis) {
+                        eellipsis.innerHTML = '&#8943;';
+                        eellipsis.classList.add('more');
+                    }
+                })
+            }
+        }
     }
 
 </script>
