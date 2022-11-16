@@ -1,7 +1,7 @@
 # text overflow
 
 
-Web design is often broken but too big or too small content.
+Web design is often broken by too big or too small content.
 
 If we are managing content, it's quite easy to re-write part to have good amount of text, good number of images at right sizes to maintain web design on different screen sizes.
 
@@ -20,7 +20,7 @@ But that doesn't solve the whole problem, you still have to make some calculatio
 
 Here with 3 functions you can cut and read too big content. Options are:
 - 3 sizes to cut for a block of cards: min, average, max
-- 3 way to view full content of a card: overflow, grow 1, grow all
+- 3 way to view full content of a card: overflow, grow (open 1), full (grow all)
 
 It has been tested on Chrome, Firefox, Safari and Edge. Now, it certainly won't work in any situation. First, it's working with CSS Grid. The cut function can certainly be used outside grid, but I didn't test it.
 
@@ -54,9 +54,9 @@ HTML structure is the following:
 
 - cards-size is the container for a block of card
 - card-size is the container for 1 card
-- car-samesize is the content of the card
+- card-samesize is the content of the card
 
-In the demo you also have other tag surrounding those 3, but you can use as you like on this. 
+In the demo you also have other tag surrounding those 3. 
 
 ```HTML
 <section id="section1">
@@ -71,7 +71,7 @@ In the demo you also have other tag surrounding those 3, but you can use as you 
 </section>
 ```
 
-You define in the "cards-size" with data attribute the way you want the block of card to be cut, and the way you want the content to be read at full size
+Data attribute in the "cards-size" defines the way you want the block of card to be cut, and the way you want the content to be read at full size
 
 ```HTML
         <div class="cards-size" data-size="min" data-ellipsis="overflow">
@@ -205,11 +205,11 @@ For a block of card, it calculates the smallest height, the average height and t
 ```
 
 ### heightCardSet
-For a block of card, it first applies the requested size (min, average, max) in data-size of the block cards-size. Value to cut is taken from the corresponding data cutheight calculated in previous function.
+For a block of card, it first applies the requested size (min, average, max) from data-size of the block cards-size. Value to cut is taken from the corresponding data cutheight calculated in previous function.
 
 For each card, it also apply kind of reading content card will have from the data ellipsis attribute (overflow, grow, full). If not present, and needed (card cut), it also adds the ellipsis button.
 
-Final, it adds the click event ont hte ellipsis button.
+Final, it adds the click event on ellipsis button.
 
 ```javascript
     const heightCardSet = function (el) {
@@ -341,8 +341,9 @@ Try the demo, to see it working.
 
 Javascript here is deliberately detailed. Not compression, or reduction of 2-3 lines in one to be more understandable. You can easily reduce it.
 
+There would be another easy "opening" option using a lightbox, but personnaly I don't like so much opening modal windows when not necessary.
 
-Hope that can help some.
+Hope that can help.
 
 Thanks for reading
 
