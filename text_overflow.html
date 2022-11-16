@@ -32,11 +32,13 @@
         width: 100%;
         padding: 1em;
     }
+
     /* *************** */
     /* text_overflow styles */
     /* *************** */
 
-    /* this text_overflow is based on CSS grid */
+    /* text_overflow is based on CSS grid */
+    /* this demo has 1 col on small screen, 2 cols on medium, ans 4 cols on large */
     .cards-size {
         margin: 0;
         padding: 0;
@@ -49,7 +51,6 @@
     }
     @media (min-width: 35.5em) {
         /* 568px */
-
     }
     @media (min-width: 48em) {
         /* 768px */
@@ -91,10 +92,6 @@
         font-size: 1.25em;
         font-weight: 700;
         cursor: pointer;
-    }
-    .card-size button.ellipsis .ico {
-        font-size: 2em;
-        font-weight: 700;
     }
     .card-samesize {
         overflow: hidden;
@@ -377,7 +374,7 @@
     <div class="container">
         <h2>Size: average (of 4)</h2>
         <h2>Expansion: scroll</h2>
-        <div class="cards-size" data-size="min" data-ellipsis="overflow">
+        <div class="cards-size" data-size="average" data-ellipsis="overflow">
             <div class="card-size">
                 <div class="card-samesize">
                     <h2>Lorem Ipsum</h2>
@@ -539,136 +536,158 @@
 
 
 <script>
-
+    // function to calculate card height
+    // el: container for the cards, here cards-size
+    // calculation done for the 3 sizes, min, average, max. Values stored in attribute
     const heightCardCalc = function (el) {
         let els = el.querySelectorAll('.card-samesize');
         let hmin = 10000;
         let haverage = 0;
         let nbel = 0;
         let hmax = 0;
+        // loop through elements of this cards-size container to calculate sizes
         els.forEach(e => {
+            // h real size of this card
             let h = e.getBoundingClientRect().height;
+            //calculate min
             if (h < hmin) {
-                hmin = h;
+                hmin = Math.round(h);
             }
+            // calculate average part 1
             haverage += h;
             nbel += 1;
+            //calculate max
             if (h > hmax) {
-                hmax = h;
+                hmax = Math.round(h);
             }
         })
-        haverage = Math.floor(haverage / nbel);
-        el.dataset.fullheight = hmax;
-        el.dataset.averageheight = hmin;
-        el.dataset.cutheight = hmin;
-
-        let how = el.dataset.size;
-        if (how === '') {
-            how = 'min';
-        }
-        //console.log(els);
-        //console.log(how);
-        if (how === 'min') {
-            return hmin;
-        } else if (how === 'average') {
-            return haverage;
-        } else if (how === 'max') {
-            return hmax;
-        }
+        // calculate average part 2
+        haverage = Math.round(haverage / nbel);
+        // attribute cutHeight in cards-size with the 3 values
+        el.dataset.cutheight = hmin + ',' + haverage + ',' + hmax;
     }
 
-    const heightCardSet = function (el, hm) {
-        console.log(el);
-        console.log(hm);
+    // function which cut (or not) at wanted size (min, average, max) each card of a container cards-size
+    // regarding sizes calculated in function heightCardCalc and stored in cutHeight attribute
+    const heightCardSet = function (el) {
+        // retrieve the sizes
+        const ar = (el.dataset.cutheight).split(',');
+        // retrieve size wanted
+        const size = el.dataset.size;
+        let hm = '';
+        // select right size for the cut wanted
+        if (size === 'min') {
+            hm = ar[0];
+        } else if (size === 'average') {
+            hm = ar[1];
+        } else if (size === 'max') {
+            hm = ar[2];
+        }
         let els = el.querySelectorAll('.card-samesize');
-        console.log(els);
+        //retrieve kind of growth wanted
         let how = el.dataset.ellipsis;
-        console.log(how);
         if (how === '') {
             how = 'overflow';
         }
+        // loop through elements of this cards-size container
         els.forEach(e => {
+            // h real size of this card
             let h = e.getBoundingClientRect().height;
+            // apply height selected to element
             e.style.height = hm + 'px';
+            // reset the overflow of element to hidden
             e.style.overflowY = 'hidden';
+            // if real size higher than cut size
             if (h > hm) {
+                // check if ellipsis exist in card, if not create it with the right class
                 if (!e.querySelector('.ellipsis')) {
                     let btn = document.createElement("button");
                     btn.classList.add('ellipsis');
                     btn.classList.add('more');
-                    btn.innerHTML = '&#8943;';
+                    btn.innerHTML = '&#8943;'; // unicode medium 3 dots
                     e.appendChild(btn);
                 }
+                // loop add event listener to each ellipsis, click call ellipsismore function
                 e.querySelector('.ellipsis').addEventListener('click', function (e) {
                     e.stopImmediatePropagation();
-                    //console.log(e.target);
                     ellipsisMore(e.target, how);
                 })
             }
         })
     }
 
-    const clickBody = () => {
-        document.body.addEventListener('click', function (e) {
-            console.log(e.target);
-        })
-    }
-    window.addEventListener('load', clickBody);
-
+    // for the demo init the cards
     window.onload = function () {
+        // cards-size all the container with card
         let els = document.querySelectorAll('.cards-size');
         els.forEach(e => {
-            let hm = heightCardCalc(e);
-            console.log(hm);
-            heightCardSet(e, hm);
+            // first: calculation of different height
+            heightCardCalc(e);
+            // second: each card treatment
+            heightCardSet(e);
         })
     }
 
+    // growth of card
+    // click on ellipsis when it exists
     function ellipsisMore(e, how) {
-        console.log(e.parentElement);
-        console.log(how);
+        // test if the card is cut
         if (e.classList.contains('more')) {
+            // 3 ways to open the card: overflow, grow (open this only), full (open all card of cards-size container
             if (how === 'overflow') {
+                // if overflow, scroll y of card clicked
                 e.parentElement.style.overflowY = 'scroll';
-                e.innerHTML = '&#8211;';
+                e.innerHTML = '&#8211;'; // unicode minus
                 e.classList.remove('more');
             } else if (how === 'grow') {
+                // if grow, height of card clicked initial height
                 e.parentElement.style.height = 'auto';
-                e.innerHTML = '&#8211;';
+                e.innerHTML = '&#8211;'; // unicode minus
                 e.classList.remove('more');
             } else if (how === 'full') {
+                // if full, height of the tallest card of this cards-size container for all card of this container
                 const econtainer = e.closest('.cards-size');
-                let hmax = econtainer.dataset.fullheight;
-                let els = econtainer.querySelectorAll('.card-samesize');
+                const ar = (econtainer.dataset.cutheight).split(',');
+                const hmax = ar[2];
+                const els = econtainer.querySelectorAll('.card-samesize');
                 els.forEach(e => {
                     e.style.height = hmax + 'px';
                     const eellipsis = e.querySelector('.ellipsis');
                     if (eellipsis) {
-                        eellipsis.innerHTML = '&#8211;';
+                        eellipsis.innerHTML = '&#8211;'; // unicode minus
                         eellipsis.classList.remove('more');
                     }
                 })
             }
         } else {
-            e.parentElement.scrollTop = 0;
+            // closing the card
+            // container of this clicked card
+            const econtainer = e.closest('.cards-size');
+            // 3 sizes values from attribute cutheight
+            const ar = (econtainer.dataset.cutheight).split(',');
+            // way to cut value from attribute size
+            const size = econtainer.dataset.size;
+            //hcut size to cut
+            let hcut = 0;
+            if (size === 'min') {
+                hcut = ar[0];
+            } else if (size === 'average') {
+                hcut = ar[1];
+            }
             if ((how === 'overflow') || (how === 'grow')) {
                 if (how === 'overflow') {
+                    // if overflow, scroll y of card hidden
+                    e.parentElement.scrollTop = 0;
                     e.parentElement.style.overflowY = 'hidden';
                 } else { //grow
-                    e.parentElement.style.height = e.closest('.cards-size').dataset.cutheight + 'px';
+                    // if grow, height of card clicked height wanted
+                    const ar = (e.closest('.cards-size').dataset.cutheight).split(',');
+                    e.parentElement.style.height = hcut + 'px';
                 }
                 e.innerHTML = '&#8943;';
                 e.classList.add('more');
             } else if (how === 'full') {
-                const econtainer = e.closest('.cards-size');
-                let how = econtainer.dataset.size;
-                let hcut = 0;
-                if (how === 'min') {
-                    hcut = econtainer.dataset.cutheight;
-                } else if (how === 'average') {
-                    hcut = econtainer.dataset.averageheight;
-                }
-
+                // if full, all card from this container cards-size back to their cut height
                 let els = econtainer.querySelectorAll('.card-samesize');
                 els.forEach(e => {
                     e.style.height = hcut + 'px';

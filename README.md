@@ -1,311 +1,348 @@
-# dropdown click
+# text overflow
 
 
+Web design is often broken but too big or too small content.
 
-Classical way is to use CSS “sticky” to fix header on top of screen. 
+If we are managing content, it's quite easy to re-write part to have good amount of text, good number of images at right sizes to maintain web design on different screen sizes.
 
-Main pro: it’s only a css (with properties positioning relative, absolute...). 
+When content coming from elsewhere (database filled by users, scraping...), web design can be easily broken.
 
-That’s working well in general. Sometimes you encounter problems: event not working (and not solved with overflow not hidden), position...
+CSS tried to address this kind of problems with clamp
 
-**Why using javascript?** 
+https://developer.mozilla.org/en-US/docs/Web/CSS/clamp
 
-Here it's a click (not onHover), so you already have javascript to respond the user click. The idea is to add some javascript lines to have a bullet proof dropdown working in all situations.
+Or with text-overflow
 
+https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow
+
+But that doesn't solve the whole problem, you still have to make some calculation to avoid broken design.
+
+
+Here with 3 functions you can cut and read too big content. Options are:
+- 3 sizes to cut for a block of cards: min, average, max
+- 3 way to view full content of a card: overflow, grow 1, grow all
+
+It has been tested on Chrome, Firefox, Safari and Edge. Now, it certainly won't work in any situation. First, it's working with CSS Grid. The cut function can certainly be used outside grid, but I didn't test it.
 
 
 ---
 *use ctrl-click to open new window*
 
-[Test it on CodePen with animation](https://codepen.io/pierfarrugia/pen/abKJgqw)
+[Test it on CodePen](https://codepen.io/pierfarrugia/pen/jOKLmzG)
 
 ![alt text](https://aonecommunication.ch/content/drop_down_click/drop_down_click.webp)
 
-[Read this on HTML page](https://aonecommunication.ch/blog.html#drop_down_click)
+[Read this on web page](https://aonecommunication.ch/blog.html#text_overflow)
 
-[See it in action full screen](https://aonecommunication.ch/content/drop_down_click/drop_down_click.html)
+[See it in action full screen](https://aonecommunication.ch/content/text_overflow/text_overflow.html)
 
-[See it in action full screen: anim version](https://aonecommunication.ch/content/drop_down_click/drop_down_click_anim.html)
 
 
 ---
-## HTML 
+## HTML Structure
 
-First part of HTML is for the demo purpose to have a header with a menu, and some sections.
-The element to fire the event must have:
-- dropdown-click class to fire the event
-- data-dropdown="XXX", XXX is the name of the dropdown linked with this click
-```html
-    <li class="dropdown-click" data-dropdown="XXX">dropdown</li>
+HTML structure is the following:
+
+```HTML
+    <div class="cards-size">
+        <div class="card-size">
+            <div class="card-samesize">
+            </div>
+        </div>
+    </div>
 ```
 
+- cards-size is the container for a block of card
+- card-size is the container for 1 card
+- car-samesize is the content of the card
 
-Second part have 3 different dropwowns defined.
+In the demo you also have other tag surrounding those 3, but you can use as you like on this. 
 
-```html
-<!-- class dropdown-content mandatory --> 
-<!-- unic ID mandatory same as data-dropdown from the associated click -->
-<div id="XXX" class="dropdown-content">
-<!-- whatever you want here -->
-    <ul>
-        <li><a href="#section1">menu 1 section 1</a></li>
-        <li><a href="#section2">menu 1 section 2</a></li>
-        <li><a href="#section3">menu 1 section 3</a></li>
-    </ul>
-</div>
-...
+```HTML
+<section id="section1">
+    <div class="container">
+        <div class="cards-size">
+            <div class="card-size">
+                <div class="card-samesize">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 ```
 
-Each dropdown has a class "dropdown-content": 
-- dropdown is a regular HTML div
-- position absolute
-- top -3000px
-- opacity 0
+You define in the "cards-size" with data attribute the way you want the block of card to be cut, and the way you want the content to be read at full size
 
-This way, absolute at -3000px with opacity 0, the element still have a bounding rect to have its size. If we were using display none, we wouldn't have size: element is removed from rendering. And we need size to know where to render it when fired element is clicked.
+```HTML
+        <div class="cards-size" data-size="min" data-ellipsis="overflow">
+```
 
-Content of dropdown can be amy html you want. For the demo, you have submenu but could be image, video, or whatever you want.
+Here cut size is min, and ellipsis is overflow
 
-You can add other dropdown to be fired on any HTML regular tag: button, image, icon...
+You have 3 options for data-size:
+- min: all card inside this cards-size will be cut to the smallest height 
+- average: all card inside this cards-size will be cut to the average height
+- max: all card inside this cards-size will be cut to the biggest height
+
+You have 3 options for data-ellipsis:
+- overflow: scroll bar will be added to the card
+- grow: card will take its original height
+- full: all card inside this cards-size will take the biggest height
+
 
 
 ---
 ## CSS
 
-First part of CSS is for the demo purpose to style header, sections...
-
-Main part needed is the 2 styles in "dropdown styles":
-
-- dropdown-click: class for elements to fire the drop-down
-- dropdown-content: class for elements to drop-down
+CSS needed:
 
 ```css
-    .dropdown-click { /* class for elements to fire the drop-down, NEEDED */
-        position: relative;
-        cursor: pointer;
-        z-index: 98;
+.cards-size {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 1em;
+    align-items: flex-start;
+}
+@media (min-width: 35.5em) { /* 568px */
+}
+@media (min-width: 48em) { /* 768px */
+    .cards-size {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 0.5em;
     }
+}
+@media (min-width: 64em) { /* 1024px */
+    .cards-size {
+        grid-template-columns: repeat(4, 1fr);
+        grid-column-gap: 1em;
+    }
+}
+@media (min-width: 85em) { /* 1360px */
+}
 
-    .dropdown-content { /* class for elements to drop-down, NEEDED */
-        position: absolute;
-        top: -3000px;
-        opacity: 0;
-        min-width: fit-content;
-        z-index: 99;
-        margin: 0;
-        padding: 0;
-    }
+.card-size {
+    position: relative;
+    padding: 1em;
+    color: #202020;
+    background-color: #CCCCCC;
+    transition: all 0.3s ease-in-out;
+}
+.card-size button.ellipsis {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    width: 2em;
+    line-height: 1em;
+    border: none;
+    background: #E1EEF4;
+    z-index: 9;
+    font-size: 1.25em;
+    font-weight: 700;
+    cursor: pointer;
+}
+.card-samesize {
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
 ```
 
-Last part is styles for the submenu inside the dropdown content in the demo.
+cards-size is defined in CSS grid with 1 column (mobile, small screen), media-query put 2 columns in medium screen, and 4 on large. 
+
+You can change this to any value you need, add xsmall or xlarge if needed.
+
+
+
+
 
 
 ---
 ## Javascript
 
+Javascript has 3 main functions:
+- heightCardCalc: height calculation on card block
+- heightCardSet: apply size and reading type to card + listening event
+- ellipsisMore: to react to user clicked on card ellipsis
+
+
+### heightCardCalc
+For a block of card, it calculates the smallest height, the average height and the biggest height. It put those 3 values in a data attribute cutheight, each value separated by a comma.
+
 ```javascript
-    const clickDropDown = () => {
-    let els_dropdown = document.querySelectorAll('.dropdown-click');
-    // adding event listener on all elements with class dropdown-click
-    els_dropdown.forEach((e) => e.addEventListener('click', function (e) {
-        e.stopImmediatePropagation();
-        // closing all opened dropdowns, see function thereafter, needed as function for reusability with scroll
-        closeAllDropDown();
-
-        // el_event, element which fire the click and el_event_rect it's bounding rect
-        const el_event = e.target;
-        const el_event_rect = el_event.getBoundingClientRect();
-
-        // el_ddc, element with the ID of the attribute 'dropdown' from el_event and el_ddc_rect it's bounding rect
-        const el_ddc = document.querySelector('#' + el_event.dataset.dropdown);
-        const el_ddc_rect = el_ddc.getBoundingClientRect();
-
-        // calculation has to be made for the top, if header bottom of screen
-        let el_ddc_top;
-
-        // TOP: compare the bottom of clicked element PLUS its corresponding dropdown height with the window height to fire dropdown under or above
-        let diff = (el_event_rect.top + el_event_rect.height + el_ddc_rect.height) - window.innerHeight;
-        if (diff < 0) {
-            // if diff < 0, dropdown will be under header
-            el_ddc_top = el_event.offsetTop + el_event_rect.height;
-            el_ddc.style.top = (el_ddc_top - el_ddc_rect.height) + 'px';
-        } else {
-            // if diff > 0, dropdown will be above header
-            el_ddc_top = el_event.offsetTop - el_ddc_rect.height;
-            el_ddc.style.top = (el_ddc_top + el_ddc_rect.height) + 'px';
+    const heightCardCalc = function (el) {
+    let els = el.querySelectorAll('.card-samesize');
+    let hmin = 10000;
+    let haverage = 0;
+    let nbel = 0;
+    let hmax = 0;
+    // loop through elements of this cards-size container to calculate sizes
+    els.forEach(e => {
+        // h real size of this card
+        let h = e.getBoundingClientRect().height;
+        //calculate min
+        if (h < hmin) {
+            hmin = Math.round(h);
         }
-
-        // LEFT: compare the left of clicked element PLUS its corresponding dropdown width with the window width
-        diff = (el_event_rect.left + el_ddc_rect.width) - window.innerWidth;
-        if (diff < 0) {
-            // if diff < 0, dropdown will be aligned left of click element
-            el_ddc.style.left = el_event_rect.left + 'px';
-        } else {
-            // if diff > 0, dropdown will be aligned right of click element
-            el_ddc.style.left = el_event_rect.right - el_ddc_rect.width + 'px';
+        // calculate average part 1
+        haverage += h;
+        nbel += 1;
+        //calculate max
+        if (h > hmax) {
+            hmax = Math.round(h);
         }
-
-        // show dropdown
-        el_ddc.style.top = el_ddc_top + 'px';
-        el_ddc.style.opacity = '1';
-    }));
+    })
+    // calculate average part 2
+    haverage = Math.round(haverage / nbel);
+    // attribute cutHeight in cards-size with the 3 values
+    el.dataset.cutheight = hmin + ',' + haverage + ',' + hmax;
 }
-window.addEventListener('load', clickDropDown);
 ```
 
-- first part: we select all dropdown clicks and attach a click event handler on it
-- for each, we define the element which fire the event and its bounding rect
-- from its data attribute dropwon, we select the element to show and it's bounding rect
+### heightCardSet
+For a block of card, it first applies the requested size (min, average, max) in data-size of the block cards-size. Value to cut is taken from the corresponding data cutheight calculated in previous function.
 
-Calculation:
-- top: to check if there is enough room under the click element to show the dropdown under otherwise on top (here we store in variable, that's for the anim version)
-- left: to check if there is enough room right of click element to show the dropdown right otherwise show it on left
+For each card, it also apply kind of reading content card will have from the data ellipsis attribute (overflow, grow, full). If not present, and needed (card cut), it also adds the ellipsis button.
 
-Last line we call this function on window load.
+Final, it adds the click event ont hte ellipsis button.
 
 ```javascript
-    const closeAllDropDown = () => {
-        let els_dropContent = document.querySelectorAll('.dropdown-content');
-        els_dropContent.forEach(e => {
-            e.style.opacity = '0';
-            e.style.top = '-3000px';
-        });
+    const heightCardSet = function (el) {
+    // retrieve the sizes
+    const ar = (el.dataset.cutheight).split(',');
+    // retrieve size wanted
+    const size = el.dataset.size;
+    let hm = '';
+    // select right size for the cut wanted
+    if (size === 'min') {
+        hm = ar[0];
+    } else if (size === 'average') {
+        hm = ar[1];
+    } else if (size === 'max') {
+        hm = ar[2];
     }
-    window.addEventListener('load', closeAllDropDown);
-
-```
-Generic function to reset all dropdowns, called in the clicks event, on scroll, and if body clicked.
-
-
-
-
-```javascript
-    document.addEventListener('scroll', closeAllDropDown);
-```
-On scroll, all dropdowns are reset. You can add it or not. Nicer.
-
-
-```javascript
-    document.body.addEventListener('click', closeAllDropDown);
-```
-On body click, reset all dropdowns. If you stop propagation in click event in your website, a click arriving to body means it was done in empty space.
-
-If you have several things to reset, you could write it this way:
-```javascript
-    document.body.addEventListener('click', function () {
-        closeAllDropDown();
-        // something else
-        // another one
-        //...
-    });
-```
-
-## Anim dropdown
-
-What about animating dropdown show.
-
-In previous version we stored the dropdown top value (el_ddc_top) to use it at the end of the function.
-
-Just after we reset the transition:
-```javascript
-    el_ddc.style.transition = '';
-```
-
-In fact, we'll make the transition in 2 steps:
-- opacity at 0, no transition value, we position the dropdown (example: if enough space under the clicked element, dropdown first position on top of this element minus the height of the dropdown)
-- transition value, opacity 1, final dropdown position
-
-If we do the transition in 1 step, dropdown will come from its original position at -3000px, and you'll see it crossing the whole screen.
-
-The little trick is we have step 1 to be done before step 2 is done otherwise we'll have same visual effect as if it were at -3000px. Now it's just 2 values changed on an element with opacity at 0 so really not a lot of calculation. Instead of building an handler to check step one finished, just a small timeout is ok:
-Just after we reset the transition:
-```javascript
-    setTimeout(function () {
-        el_ddc.style.transition = '.3s ease-in-out';
-        el_ddc.style.top = el_ddc_top + 'px';
-        el_ddc.style.opacity = '1';
-}, 200)
-```
-Because we have reset transition before step1, we put it back for step 2. We also reset the transition in close all dropdowns.
-
-Final function for anim:
-```javascript
-    /* ========== dropdown click ========== */
-const clickDropDown = () => {
-    let els_dropdown = document.querySelectorAll('.dropdown-click');
-    // adding event listener on all elements with class dropdown-click
-    els_dropdown.forEach((e) => e.addEventListener('click', function (e) {
-        e.stopImmediatePropagation();
-        // closing all opened dropdowns, see function thereafter, needed as function for reusability with scroll
-        closeAllDropDown();
-
-        // el_event, element which fire the click and el_event_rect it's bounding rect
-        const el_event = e.target;
-        const el_event_rect = el_event.getBoundingClientRect();
-
-        // el_ddc, element with the ID of the attribute 'dropdown' from el_event and el_ddc_rect it's bounding rect
-        const el_ddc = document.querySelector('#' + el_event.dataset.dropdown);
-        const el_ddc_rect = el_ddc.getBoundingClientRect();
-
-        // calculation has to be made for the top, if header bottom of screen, needed as variable el_ddc_top
-        let el_ddc_top;
-        // reset transition, needed for first changes of value, otherwise coming from -3000!
-        el_ddc.style.transition = '';
-
-        // TOP: compare the bottom of clicked element PLUS its corresponding dropdown height with the window height to fire dropdown under or above
-        let diff = (el_event_rect.top + el_event_rect.height + el_ddc_rect.height) - window.innerHeight;
-        if (diff < 0) {
-            // if diff < 0, dropdown will be under header
-            el_ddc_top = el_event.offsetTop + el_event_rect.height;
-            el_ddc.style.top = (el_ddc_top - el_ddc_rect.height) + 'px';
-        } else {
-            // if diff > 0, dropdown will be above header
-            el_ddc_top = el_event.offsetTop - el_ddc_rect.height;
-            el_ddc.style.top = (el_ddc_top + el_ddc_rect.height) + 'px';
+    let els = el.querySelectorAll('.card-samesize');
+    //retrieve kind of growth wanted
+    let how = el.dataset.ellipsis;
+    if (how === '') {
+        how = 'overflow';
+    }
+    // loop through elements of this cards-size container
+    els.forEach(e => {
+        // h real size of this card
+        let h = e.getBoundingClientRect().height;
+        // apply height selected to element
+        e.style.height = hm + 'px';
+        // reset the overflow of element to hidden
+        e.style.overflowY = 'hidden';
+        // if real size higher than cut size
+        if (h > hm) {
+            // check if ellipsis exist in card, if not create it with the right class
+            if (!e.querySelector('.ellipsis')) {
+                let btn = document.createElement("button");
+                btn.classList.add('ellipsis');
+                btn.classList.add('more');
+                btn.innerHTML = '&#8943;'; // unicode medium 3 dots
+                e.appendChild(btn);
+            }
+            // loop add event listener to each ellipsis, click call ellipsismore function
+            e.querySelector('.ellipsis').addEventListener('click', function (e) {
+                e.stopImmediatePropagation();
+                ellipsisMore(e.target, how);
+            })
         }
+    })
+}
+```
 
-        // LEFT: compare the left of clicked element PLUS its corresponding dropdown width with the window width
-        diff = (el_event_rect.left + el_ddc_rect.width) - window.innerWidth;
-        if (diff < 0) {
-            // if diff < 0, dropdown will be aligned left of click element
-            el_ddc.style.left = el_event_rect.left  + 'px';
-        } else {
-            // if diff > 0, dropdown will be aligned right of click element
-            el_ddc.style.left = el_event_rect.right - el_ddc_rect.width  + 'px';
+### ellipsisMore
+For 1 card, respond to user click to read the full content or to close back the card.
+
+```javascript
+    function ellipsisMore(e, how) {
+    // test if the card is cut
+    if (e.classList.contains('more')) {
+        // 3 ways to open the card: overflow, grow (open this only), full (open all card of cards-size container
+        if (how === 'overflow') {
+            // if overflow, scroll y of card clicked
+            e.parentElement.style.overflowY = 'scroll';
+            e.innerHTML = '&#8211;'; // unicode minus
+            e.classList.remove('more');
+        } else if (how === 'grow') {
+            // if grow, height of card clicked initial height
+            e.parentElement.style.height = 'auto';
+            e.innerHTML = '&#8211;'; // unicode minus
+            e.classList.remove('more');
+        } else if (how === 'full') {
+            // if full, height of the tallest card of this cards-size container for all card of this container
+            const econtainer = e.closest('.cards-size');
+            const ar = (econtainer.dataset.cutheight).split(',');
+            const hmax = ar[2];
+            const els = econtainer.querySelectorAll('.card-samesize');
+            els.forEach(e => {
+                e.style.height = hmax + 'px';
+                const eellipsis = e.querySelector('.ellipsis');
+                if (eellipsis) {
+                    eellipsis.innerHTML = '&#8211;'; // unicode minus
+                    eellipsis.classList.remove('more');
+                }
+            })
         }
-
-        // little timeout: time for previous value to be applied before opacity on
-        // little transition of only dropdown height otherwise transition arrives from -3000px
-        setTimeout(function () {
-            el_ddc.style.transition = '.3s ease-in-out';
-            el_ddc.style.top = el_ddc_top + 'px';
-            el_ddc.style.opacity = '1';
-        }, 200)
-    }));
+    } else {
+        // closing the card
+        // container of this clicked card
+        const econtainer = e.closest('.cards-size');
+        // 3 sizes values from attribute cutheight
+        const ar = (econtainer.dataset.cutheight).split(',');
+        // way to cut value from attribute size
+        const size = econtainer.dataset.size;
+        //hcut size to cut
+        let hcut = 0;
+        if (size === 'min') {
+            hcut = ar[0];
+        } else if (size === 'average') {
+            hcut = ar[1];
+        }
+        if ((how === 'overflow') || (how === 'grow')) {
+            if (how === 'overflow') {
+                // if overflow, scroll y of card hidden
+                e.parentElement.scrollTop = 0;
+                e.parentElement.style.overflowY = 'hidden';
+            } else { //grow
+                // if grow, height of card clicked height wanted
+                const ar = (e.closest('.cards-size').dataset.cutheight).split(',');
+                e.parentElement.style.height = hcut + 'px';
+            }
+            e.innerHTML = '&#8943;';
+            e.classList.add('more');
+        } else if (how === 'full') {
+            // if full, all card from this container cards-size back to their cut height
+            let els = econtainer.querySelectorAll('.card-samesize');
+            els.forEach(e => {
+                e.style.height = hcut + 'px';
+                const eellipsis = e.querySelector('.ellipsis');
+                if (eellipsis) {
+                    eellipsis.innerHTML = '&#8943;';
+                    eellipsis.classList.add('more');
+                }
+            })
+        }
+    }
 }
-window.addEventListener('load', clickDropDown);
-
-/* ========== if scroll close all dropdown ========== */
-const closeAllDropDown = () => {
-    let els_dropContent = document.querySelectorAll('.dropdown-content');
-    els_dropContent.forEach(e => {
-        e.style.transition = '';
-        e.style.opacity = '0';
-        e.style.top = '-3000px';
-    });
-}
-window.addEventListener('load', closeAllDropDown);
-
-// on scroll close all dropdowns
-document.addEventListener('scroll', closeAllDropDown);
-// on click body close all dropdowns. Meaning event bubbling arrived to body, Other events has to stop propagation or not
-document.body.addEventListener('click', closeAllDropDown);
-
 ```
 
 
+Try the demo, to see it working.
+
+Javascript here is deliberately detailed. Not compression, or reduction of 2-3 lines in one to be more understandable. You can easily reduce it.
 
 
+Hope that can help some.
 
 Thanks for reading
 
